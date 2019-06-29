@@ -28,6 +28,9 @@ public class SSSP {
 			// numbers++;
 			Vertex from = new SSSP_Vertex(Integer.parseInt(spl[0]), Double.POSITIVE_INFINITY);
 			if (!allpoints.contains(from)) {
+				if(from.GetID()==0) {//从最小顶点开始
+					from.ChangeVertexValue(0);
+				}
 				allpoints.add(from);
 			}
 			// 判断点中是否含顶点to

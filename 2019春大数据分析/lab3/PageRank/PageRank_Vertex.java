@@ -1,13 +1,14 @@
 package PageRank;
 
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import Pregel.Vertex;
 
 public class PageRank_Vertex extends Vertex {
-	private static Set<Vertex> allpoints;
-	private int N = allpoints.size();
+	private static  PageRank_Aggr allpoints = new PageRank_Aggr();
+	private int N = 0;
 
 	public PageRank_Vertex(int num, double str) {
 		super(num, str);
@@ -16,14 +17,28 @@ public class PageRank_Vertex extends Vertex {
 
 	@Override
 	public void Compute(Set<Double> str) {
-		Iterator<Double> it = str.iterator();
-		double sum = 0;
-		while (it.hasNext()) {
-			double outV = it.next();
-			sum += outV;
+		if(this.GetSteps()>=1 && this.GetSteps()<5) {
+			Iterator<Double> it = str.iterator();
+			double sum = 0;
+			while (it.hasNext()) {
+				double outV = it.next();
+				sum += outV;
+			}
+			int N = this.GetOutEdge().size();
+			this.ChangeVertexValue(0.15 / N + 0.85 * sum);
+		}else if(this.GetSteps()== 0){
+			Iterator<Double> it = str.iterator();
+			double sum = 0;
+			while (it.hasNext()) {
+				double outV = it.next();
+				sum += outV;
+				allpoints.Aggreg(this, str);
+			}
+			int N = allpoints.Aggreg(this ,str).keySet().size();
+			this.ChangeVertexValue(0.15 / N + 0.85 * sum);
+		}else {
+			this.VoteToHalt();
 		}
-		this.ChangeVertexValue(0.15 / N + 0.85 * sum);
-		this.VoteToHalt();
 		return;
 
 	}

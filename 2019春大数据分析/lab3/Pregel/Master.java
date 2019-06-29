@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class Master {
 	private List<Worker> MyWorkers = new ArrayList<Worker>();// Worker列表
-	private int WorksNum = 1;// 分几个worksWorks
+	private int WorksNum = 1;// 分几个worker
 	private List<Set<Vertex>> Partall = new ArrayList<>();// 顶点分组结果
 	private Set<Vertex> graphall;// 全图==全电
 	private int Maststeps = -1;
